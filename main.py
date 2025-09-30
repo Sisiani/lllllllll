@@ -10,8 +10,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+TELEGRAM_TOKEN = os.environ.get("8364249900:AAHwMq2PDpIUATHHoBsNyBgvc8GgbnMeqso")
+OPENAI_API_KEY = os.environ.get("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")
 
 if not TELEGRAM_TOKEN:
     logger.error("TELEGRAM_TOKEN environment variable not set. Exiting.")
