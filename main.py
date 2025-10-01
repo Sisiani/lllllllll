@@ -1,7 +1,7 @@
 import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters, CommandHandler
-import openai
+from openai import OpenAI
 
 # Configure logging
 logging.basicConfig(
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 TELEGRAM_TOKEN = "8364249900:AAHwMq2PDpIUATHHoBsNyBgvc8GgbnMeqso"
 OPENAI_API_KEY = "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"
 
-openai.api_key = OPENAI_API_KEY
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Simple in-memory conversation store (per chat). For production use a DB.
 CONVERSATIONS = {}
@@ -40,15 +40,15 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Append user message
     history.append({"role": "user", "content": user_text})
 
-    # Call OpenAI ChatCompletion
+    # Call OpenAI ChatCompletion with new API
     try:
-        resp = openai.ChatCompletion.create(
+        resp = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=history,
             max_tokens=512,
             temperature=0.7,
         )
-        assistant_reply = resp["choices"][0]["message"]["content"].strip()
+        assistant_reply = resp.choices[0].message.content.strip()
     except Exception as e:
         logger.exception("OpenAI request failed")
         await update.message.reply_text("خطا در ارتباط با سرویس هوش مصنوعی: " + str(e))
