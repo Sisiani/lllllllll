@@ -1,4 +1,3 @@
-import os
 import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters, CommandHandler
@@ -10,16 +9,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TELEGRAM_TOKEN = os.environ.get("8364249900:AAHwMq2PDpIUATHHoBsNyBgvc8GgbnMeqso")
-OPENAI_API_KEY = os.environ.get("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")
-
-if not TELEGRAM_TOKEN:
-    logger.error("TELEGRAM_TOKEN environment variable not set. Exiting.")
-    raise SystemExit("Please set TELEGRAM_TOKEN environment variable.")
-
-if not OPENAI_API_KEY:
-    logger.error("OPENAI_API_KEY environment variable not set. Exiting.")
-    raise SystemExit("Please set OPENAI_API_KEY environment variable.")
+# WARNING: Hard-coded credentials (INSECURE). Only use for quick local tests.
+TELEGRAM_TOKEN = "8364249900:AAHwMq2PDpIUATHHoBsNyBgvc8GgbnMeqso"
+OPENAI_API_KEY = "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"
 
 openai.api_key = OPENAI_API_KEY
 
@@ -50,9 +42,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Call OpenAI ChatCompletion
     try:
-        # Use the Chat Completions API (gpt-3.5 / gpt-4 compatible format)
         resp = openai.ChatCompletion.create(
-            model=os.environ.get("OPENAI_MODEL", "gpt-3.5-turbo"),
+            model="gpt-3.5-turbo",
             messages=history,
             max_tokens=512,
             temperature=0.7,
@@ -71,7 +62,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if len(assistant_reply) <= MAX_LEN:
         await update.message.reply_text(assistant_reply)
     else:
-        # split into parts
         for i in range(0, len(assistant_reply), MAX_LEN):
             await update.message.reply_text(assistant_reply[i:i+MAX_LEN])
 
