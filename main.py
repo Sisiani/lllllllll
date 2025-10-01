@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 # WARNING: Hard-coded credentials (INSECURE). Only use for quick local tests.
 TELEGRAM_TOKEN = "8364249900:AAHwMq2PDpIUATHHoBsNyBgvc8GgbnMeqso"
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = ""
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
